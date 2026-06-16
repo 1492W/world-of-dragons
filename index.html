@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World of Dragons — อาณาจักรมังกร</title>
+<title>World of Dragons</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&family=Sarabun:wght@400;600;700&family=Mali:wght@500;600;700&display=swap" rel="stylesheet">
@@ -96,6 +96,39 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .t-spell .temoji{background:linear-gradient(135deg,#5ba3d8,#3a86c8);} .t-spell .tcount{background:var(--sky);} .t-spell .playbtn{background:var(--sky);box-shadow:0 4px 0 #275f8f;}
 .t-sci .temoji{background:linear-gradient(135deg,#9a6cc8,#7a47b0);} .t-sci .tcount{background:var(--plum);}
 
+/* ---------- confetti + emperor awakening ---------- */
+.confetti-pc{position:fixed;top:-20px;width:11px;height:16px;z-index:60;pointer-events:none;border-radius:2px;}
+@keyframes fall{0%{transform:translateY(0) rotateZ(0)}100%{transform:translateY(110vh) rotateZ(720deg)}}
+.emperor{position:fixed;inset:0;z-index:65;display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:26px;text-align:center;overflow:hidden;
+  background:radial-gradient(circle at 50% 42%, #4a3a2a 0%, #1a1023 55%, #0a0612 100%);animation:fadein .5s;}
+.emperor.show{display:flex;}
+.emperor .rays{position:absolute;top:40%;left:50%;width:160vh;height:160vh;transform:translate(-50%,-50%);pointer-events:none;
+  background:conic-gradient(from 0deg, #f0b32a22 0deg, transparent 12deg, #f0b32a22 24deg, transparent 36deg, #f0b32a22 48deg, transparent 60deg, #f0b32a22 72deg, transparent 84deg, #f0b32a22 96deg, transparent 108deg, #f0b32a22 120deg, transparent 132deg, #ffe9a833 144deg, transparent 156deg, #f0b32a22 168deg, transparent 180deg, #f0b32a22 192deg, transparent 204deg, #f0b32a22 216deg, transparent 228deg, #f0b32a22 240deg, transparent 252deg, #f0b32a22 264deg, transparent 276deg, #ffe9a833 288deg, transparent 300deg, #f0b32a22 312deg, transparent 324deg, #f0b32a22 336deg, transparent 348deg);
+  animation:spin 14s linear infinite;}
+.emperor .halo{position:absolute;top:38%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(circle, #ffd98a55 0%, #f0b32a22 35%, transparent 60%);animation:pulse 2.4s ease-in-out infinite;}
+.emperor .pretitle{font-family:'Mali';font-size:16px;color:#ffd98a;letter-spacing:1px;position:relative;
+  opacity:0;animation:fadeUp .6s .2s forwards;}
+.emperor .edragon{font-size:150px;line-height:1;position:relative;margin:4px 0;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5));
+  opacity:0;animation:emperorRise 1.1s .5s cubic-bezier(.2,1.5,.35,1) forwards;}
+@keyframes emperorRise{0%{transform:scale(.1) translateY(60px) rotate(-20deg);opacity:0}
+  55%{transform:scale(1.25) translateY(-10px) rotate(6deg);opacity:1}100%{transform:scale(1) translateY(0) rotate(0);opacity:1}}
+.emperor .crownpop{position:absolute;top:14%;left:50%;transform:translateX(-50%);font-size:54px;
+  opacity:0;animation:crownDrop 1s 1.3s cubic-bezier(.3,1.7,.4,1) forwards;z-index:2;}
+@keyframes crownDrop{0%{transform:translateX(-50%) translateY(-60px) scale(.4);opacity:0}
+  60%{transform:translateX(-50%) translateY(6px) scale(1.2);opacity:1}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
+.emperor .etitle{font-family:'Mitr';font-weight:700;font-size:clamp(30px,9vw,42px);position:relative;margin-top:6px;
+  background:linear-gradient(135deg,#fff3cf,#f0b32a 50%,#e8602c);-webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:0;animation:fadeUp .6s 1.5s forwards;}
+.emperor .edesc{font-family:'Mali';font-weight:600;font-size:17px;color:#ffe9a8;margin-top:6px;position:relative;
+  opacity:0;animation:fadeUp .6s 1.8s forwards;max-width:300px;}
+.emperor .ebtn{margin-top:26px;position:relative;font-family:'Mitr';font-weight:600;font-size:17px;color:#3a2a08;
+  background:linear-gradient(135deg,var(--gold),#ffd98a);border:none;border-radius:16px;padding:14px 28px;cursor:pointer;
+  box-shadow:0 5px 0 var(--gold-d);opacity:0;animation:fadeUp .6s 2.2s forwards;}
+.emperor .ebtn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--gold-d);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
 /* ---------- demo toggle + footer ---------- */
 .demobar{position:fixed;top:10px;right:10px;z-index:5;}
 .demobtn{font-family:'Mitr';font-weight:600;font-size:12px;background:rgba(255,255,255,.12);color:#ffd98a;
@@ -108,80 +141,90 @@ footer{text-align:center;color:#8a7caa;font-size:12px;margin-top:24px;line-heigh
 </style>
 </head>
 <body>
-<div class="demobar"><button class="demobtn" id="demoBtn" onclick="toggleDemo()">🔮 ดูตัวอย่างสะสมครบ</button></div>
+<div class="demobar"><button class="demobtn" id="demoBtn" onclick="toggleDemo()">🔮 Preview full collection</button></div>
 <div id="app">
 
   <div class="hero">
     <div class="crown">🐉</div>
     <h1>World of Dragons</h1>
-    <div class="th">อาณาจักรมังกร</div>
-    <div class="tag">เล่นครบทุกเกม สะสมมังกรครบทุกเผ่า ปลุกพญามังกรในตำนาน</div>
+    <div class="th">The Dragon Realm</div>
+    <div class="tag">Play every game, collect every tribe, awaken the legendary Dragon Emperor</div>
   </div>
 
   <div class="royal" id="royal">
     <div class="king" id="kingEmoji">👑</div>
-    <div class="kname" id="kingName">พญามังกรห้าเผ่า</div>
-    <div class="kdesc" id="kingDesc">สะสมพญามังกรให้ครบทุกเผ่าเพื่อปลุกราชาแห่งอาณาจักร</div>
+    <div class="kname" id="kingName">The Dragon Emperor</div>
+    <div class="kdesc" id="kingDesc">Collect every tribe's King Dragon to awaken the ruler of the realm</div>
     <div class="pbar"><i id="pbarFill" style="width:0%"></i></div>
-    <div class="pcount" id="pcount">มังกรในตำนาน 0 / 3 เผ่า</div>
+    <div class="pcount" id="pcount">King Dragons 0 / 3 tribes</div>
   </div>
 
-  <div class="sec-label">เผ่ามังกร · Dragon Tribes</div>
+  <div class="sec-label">Dragon Tribes</div>
   <div id="tribes"></div>
 
   <footer>
     1492W · World of Dragons<br>
-    เล่นเกมไหนก็ได้มังกรเข้าคลังกลางใบเดียวกัน
+    Every game adds dragons to one shared vault
   </footer>
+</div>
+<div class="emperor" id="emperor">
+  <div class="rays"></div>
+  <div class="halo"></div>
+  <div class="crownpop">👑</div>
+  <div class="pretitle">All King Dragons gathered...</div>
+  <div class="edragon">🐉</div>
+  <div class="etitle">Dragon Emperor</div>
+  <div class="edesc">Pordee is the true ruler of the Dragon Realm! 🎉</div>
+  <button class="ebtn" onclick="closeEmperor()">Claim the Throne ✨</button>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
 'use strict';
 /* ============ WORLD OF DRAGONS — hub ============
-   คลังมังกรกลาง: เก็บใน localStorage key เดียว ('worldofdragons_v1')
-   ที่ทุกเกมใต้ 1492w.github.io แชร์ร่วมกันได้ (localStorage ผูกกับโดเมน ไม่ใช่ path)
-   แต่ละเกมเมื่อถึง milestone จะ push id มังกรเผ่าของตัวเองลง tribes[ชื่อเผ่า] */
+   Shared dragon vault: one localStorage key ('worldofdragons_v1')
+   shared across every game under 1492w.github.io (localStorage is per-origin, not per-path)
+   each game pushes its tribe-dragon id into tribes[tribeName] on a milestone */
 
 const TRIBES = [
   {
-    id:'thai', cls:'t-thai', emoji:'📖', name:'เผ่าอ่านไทย', sub:'Dragon Thai · อ่านสะกดคำไทย',
+    id:'thai', cls:'t-thai', emoji:'📖', name:'Reading Tribe', sub:'Dragon Thai · Thai reading',
     url:'https://1492w.github.io/dragon-thai/',
     dragons:[
-      {id:'thai_consonant', e:'🐲', label:'มังกรพยัญชนะ', how:'ผ่านระดับ A'},
-      {id:'thai_vowel',     e:'🐉', label:'มังกรสระ',      how:'ผ่านระดับ B'},
-      {id:'thai_lead',      e:'🐊', label:'มังกรอักษรนำ',  how:'ผ่านระดับ C'},
-      {id:'thai_tone',      e:'🎶', label:'มังกรวรรณยุกต์',how:'ผ่านระดับ D'},
-      {id:'thai_collector', e:'💎', label:'มังกรนักสะสม',  how:'สะสมในเกมครึ่งหนึ่ง'},
-      {id:'thai_king',      e:'👑', label:'พญามังกรไทย',   how:'พิชิตหอคอยทั้งหมด', legend:true},
+      {id:'thai_consonant', e:'🐲', label:'Consonant Dragon', how:'Clear Level A'},
+      {id:'thai_vowel',     e:'🐉', label:'Vowel Dragon',     how:'Clear Level B'},
+      {id:'thai_lead',      e:'🐊', label:'Lead Dragon',      how:'Clear Level C'},
+      {id:'thai_tone',      e:'🎶', label:'Tone Dragon',      how:'Clear Level D'},
+      {id:'thai_collector', e:'💎', label:'Collector Dragon', how:'Collect half in-game'},
+      {id:'thai_king',      e:'👑', label:'Reading King Dragon', how:'Conquer the whole tower', legend:true},
     ],
   },
   {
-    id:'math', cls:'t-math', emoji:'🔢', name:'เผ่าเลข', sub:'Math Dragon · คณิตคิดเร็ว',
+    id:'math', cls:'t-math', emoji:'🔢', name:'Math Tribe', sub:'Math Dragon · mental math',
     url:'https://1492w.github.io/math-dragon/',
     dragons:[
-      {id:'math_add',  e:'🐲', label:'มังกรบวก',   how:'ผ่านด่านบวก'},
-      {id:'math_sub',  e:'🐉', label:'มังกรลบ',    how:'ผ่านด่านลบ'},
-      {id:'math_mul',  e:'🔥', label:'มังกรคูณ',   how:'ผ่านด่านคูณ'},
-      {id:'math_div',  e:'🐊', label:'มังกรหาร',   how:'ผ่านด่านหาร'},
-      {id:'math_speed',e:'💎', label:'มังกรคิดเร็ว',how:'ทำเวลาได้ตามเป้า'},
-      {id:'math_king', e:'👑', label:'พญามังกรเลข',how:'พิชิตทุกด่าน', legend:true},
+      {id:'math_add',  e:'🐲', label:'Plus Dragon',   how:'Clear addition'},
+      {id:'math_sub',  e:'🐉', label:'Minus Dragon',  how:'Clear subtraction'},
+      {id:'math_mul',  e:'🔥', label:'Times Dragon',  how:'Clear multiplication'},
+      {id:'math_div',  e:'🐊', label:'Divide Dragon', how:'Clear division'},
+      {id:'math_speed',e:'💎', label:'Speed Dragon',  how:'Beat the time goal'},
+      {id:'math_king', e:'👑', label:'Math King Dragon', how:'Conquer every stage', legend:true},
     ],
   },
   {
-    id:'spelling', cls:'t-spell', emoji:'🔤', name:'เผ่าอักษร', sub:'Dragon Spelling · สะกดอังกฤษ',
+    id:'spelling', cls:'t-spell', emoji:'🔤', name:'Spelling Tribe', sub:'Dragon Spelling · English spelling',
     url:'https://1492w.github.io/dragon-spelling/',
     dragons:[
-      {id:'sp_abc',    e:'🐲', label:'มังกร ABC',  how:'รู้จักตัวอักษร'},
-      {id:'sp_short',  e:'🐉', label:'มังกรคำสั้น', how:'สะกดคำสั้นได้'},
-      {id:'sp_long',   e:'🐊', label:'มังกรคำยาว', how:'สะกดคำยาวได้'},
-      {id:'sp_sight',  e:'⚡', label:'มังกรคำที่พบบ่อย', how:'จำ sight words'},
-      {id:'sp_master', e:'💎', label:'มังกรนักสะกด',how:'สะสมในเกมครึ่งหนึ่ง'},
-      {id:'sp_king',   e:'👑', label:'พญามังกรอักษร',how:'พิชิตหอคำศัพท์', legend:true},
+      {id:'sp_abc',    e:'🐲', label:'ABC Dragon',     how:'Learn the letters'},
+      {id:'sp_short',  e:'🐉', label:'Short Word Dragon', how:'Spell short words'},
+      {id:'sp_long',   e:'🐊', label:'Long Word Dragon',  how:'Spell long words'},
+      {id:'sp_sight',  e:'⚡', label:'Sight Word Dragon', how:'Learn sight words'},
+      {id:'sp_master', e:'💎', label:'Speller Dragon', how:'Collect half in-game'},
+      {id:'sp_king',   e:'👑', label:'Spelling King Dragon', how:'Conquer the word tower', legend:true},
     ],
   },
   {
-    id:'science', cls:'t-sci', emoji:'🔬', name:'เผ่าวิทย์', sub:'เร็ว ๆ นี้',
+    id:'science', cls:'t-sci', emoji:'🔬', name:'Science Tribe', sub:'Coming soon',
     url:null, soon:true,
     dragons:[
       {id:'sci_1', e:'🧪', label:'', how:''},{id:'sci_2', e:'🔭', label:'', how:''},
@@ -195,7 +238,7 @@ const KEY='worldofdragons_v1';
 let demo=false;
 
 function loadWorld(){
-  if(demo){ // ตัวอย่าง: ปลดมังกรเกือบครบทุกเผ่าที่เปิดอยู่ ให้เห็นภาพปลายทาง
+  if(demo){ // preview: fill every open tribe so the end-state is visible
     return {tribes:{
       thai:['thai_consonant','thai_vowel','thai_lead','thai_tone','thai_collector','thai_king'],
       math:['math_add','math_sub','math_mul','math_div','math_speed','math_king'],
@@ -235,8 +278,8 @@ function render(){
       </div>
       <div class="dragrow">${toks}</div>
       ${T.soon
-        ? `<button class="playbtn soon">เร็ว ๆ นี้</button>`
-        : `<button class="playbtn" onclick="goGame('${T.url}')">เล่นเลย →</button>`}
+        ? `<button class="playbtn soon">Coming Soon</button>`
+        : `<button class="playbtn" onclick="goGame('${T.url}')">Play →</button>`}
     `;
     host.appendChild(card);
   });
@@ -245,26 +288,64 @@ function render(){
   const royal=document.getElementById('royal');
   const pct = kingsTotal? Math.round(kingsGot/kingsTotal*100):0;
   document.getElementById('pbarFill').style.width=pct+'%';
-  document.getElementById('pcount').textContent=`พญามังกร ${kingsGot} / ${kingsTotal} เผ่า`;
+  document.getElementById('pcount').textContent=`King Dragons ${kingsGot} / ${kingsTotal} tribes`;
   if(kingsGot>=kingsTotal && kingsTotal>0){
     royal.classList.add('unlocked');
     document.getElementById('kingEmoji').textContent='✨';
-    document.getElementById('kingName').textContent='จักรพรรดิมังกร';
-    document.getElementById('kingDesc').textContent='ปลุกราชาแห่งอาณาจักรสำเร็จ! พอดีคือเจ้าแห่งมังกรตัวจริง';
+    document.getElementById('kingName').textContent='Dragon Emperor';
+    document.getElementById('kingDesc').textContent='The realm\'s ruler is awakened! Pordee is the true Dragon Lord';
+    maybeEmperor();   // big celebration when the emperor awakens (first completion, or in preview)
   }else{
     royal.classList.remove('unlocked');
     document.getElementById('kingEmoji').textContent='👑';
-    document.getElementById('kingName').textContent='พญามังกรห้าเผ่า';
-    document.getElementById('kingDesc').textContent='สะสมพญามังกร (👑) ให้ครบทุกเผ่าเพื่อปลุกราชาแห่งอาณาจักร';
+    document.getElementById('kingName').textContent='The Dragon Emperor';
+    document.getElementById('kingDesc').textContent='Collect each tribe\'s King Dragon (👑) to awaken the realm\'s ruler';
   }
 }
 
 function goGame(url){ if(url) location.href=url; }
+
+/* ---------- emperor awakening (the climax) ---------- */
+const CONFETTI_COLORS=['#e8602c','#f0b32a','#2fa37a','#3a86c8','#7a47b0','#ffd98a','#fff'];
+function confetti(n=120){
+  for(let i=0;i<n;i++){
+    const c=document.createElement('div');c.className='confetti-pc';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=CONFETTI_COLORS[i%CONFETTI_COLORS.length];
+    const dur=2.4+Math.random()*2, delay=Math.random()*0.7;
+    c.style.animation=`fall ${dur}s linear ${delay}s forwards`;
+    if(Math.random()<.5){c.style.width='8px';c.style.height='8px';c.style.borderRadius='50%';}
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),(dur+delay)*1000+120);
+  }
+}
+let emperorShown=false; // avoid replaying within a single page view
+function maybeEmperor(){
+  if(emperorShown)return;
+  if(demo){ emperorShown=true; setTimeout(emperorReveal,250); return; } // preview mode: always show
+  // real data: celebrate only the first time everything is complete (remember it happened)
+  try{
+    const W=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(!W.crowned){ W.crowned=true; W.updated=Date.now(); localStorage.setItem(KEY,JSON.stringify(W));
+      emperorShown=true; setTimeout(emperorReveal,300); }
+  }catch(e){}
+}
+function emperorReveal(){
+  const el=document.getElementById('emperor');
+  el.classList.add('show');
+  // confetti in waves for a grand feel
+  confetti(140);
+  setTimeout(()=>confetti(120),700);
+  setTimeout(()=>confetti(120),1500);
+}
+function closeEmperor(){ document.getElementById('emperor').classList.remove('show'); }
+
 function toggleDemo(){
-  demo=!demo;
+  demo=!demo; emperorShown=false;  // toggling preview resets so the celebration can show again
   document.getElementById('demoBtn').classList.toggle('on',demo);
-  document.getElementById('demoBtn').textContent = demo?'🔮 กำลังดูตัวอย่าง':'🔮 ดูตัวอย่างสะสมครบ';
-  toast(demo?'นี่คือภาพเมื่อสะสมครบทุกเผ่า':'กลับมาที่ข้อมูลจริง');
+  document.getElementById('demoBtn').textContent = demo?'🔮 Previewing':'🔮 Preview full collection';
+  toast(demo?'This is how it looks when every tribe is complete':'Back to your real progress');
+  if(!demo)closeEmperor();
   render();
 }
 let tt;
