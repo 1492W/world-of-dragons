@@ -1,357 +1,457 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>World of Dragons</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&family=Sarabun:wght@400;600;700&family=Mali:wght@500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --night:#161229; --night2:#241d44; --night3:#2f2658;
-  --parch:#f7ecd4; --card:#fffaf0;
-  --ember:#e8602c; --ember-d:#c14515;
-  --gold:#f0b32a; --gold-d:#b97f12;
-  --jade:#2fa37a; --jade-d:#1d7a58;
-  --plum:#7a47b0; --sky:#3a86c8; --ink:#2b2118;
-  --muted:#a99; --line:#3a3060;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;}
-body{
-  font-family:'Sarabun',sans-serif;color:#f2ead8;
-  background:
-    radial-gradient(1100px 600px at 50% -8%, #3a2d6b 0%, transparent 55%),
-    radial-gradient(700px 500px at 90% 20%, #4a2d5e 0%, transparent 50%),
-    linear-gradient(180deg, var(--night2) 0%, var(--night) 100%);
-  background-attachment:fixed;min-height:100vh;
-}
-/* drifting stars */
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    radial-gradient(2px 2px at 12% 18%, #fff6 40%, transparent),
-    radial-gradient(2px 2px at 72% 12%, #fff5 40%, transparent),
-    radial-gradient(1.5px 1.5px at 38% 30%, #ffd98a88 40%, transparent),
-    radial-gradient(2px 2px at 88% 42%, #fff4 40%, transparent),
-    radial-gradient(1.5px 1.5px at 22% 52%, #fff4 40%, transparent),
-    radial-gradient(2px 2px at 60% 60%, #ffd98a66 40%, transparent);
-}
-#app{max-width:560px;margin:0 auto;padding:20px 16px 40px;position:relative;z-index:1;}
-
-/* ---------- hero ---------- */
-.hero{text-align:center;padding:14px 0 8px;}
-.hero .crown{font-size:80px;line-height:1;filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));animation:hover 3.6s ease-in-out infinite;}
-@keyframes hover{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(2deg)}}
-.hero h1{font-family:'Mitr';font-weight:700;font-size:clamp(30px,8vw,40px);margin:8px 0 0;
-  background:linear-gradient(135deg,#ffe9a8,#f0b32a 55%,#e8602c);-webkit-background-clip:text;background-clip:text;color:transparent;
-  letter-spacing:.5px;}
-.hero .th{font-family:'Mali';font-weight:600;font-size:18px;color:#ffd98a;margin-top:-2px;}
-.hero .tag{color:#cbb8e8;font-size:14px;margin-top:8px;}
-
-/* ---------- royal banner ---------- */
-.royal{margin:20px 0;border-radius:22px;padding:20px 18px;text-align:center;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#3a2d6b,#2a2052);border:1.5px solid #5a4a9a;box-shadow:0 10px 30px rgba(0,0,0,.35);}
-.royal::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, #f0b32a22, transparent 60%);}
-.royal .king{font-size:62px;line-height:1;filter:grayscale(1) brightness(.5);transition:.5s;position:relative;}
-.royal.unlocked .king{filter:none;animation:hover 3s ease-in-out infinite;}
-.royal .kname{font-family:'Mitr';font-weight:700;font-size:20px;margin:6px 0 2px;color:#ffe9a8;position:relative;}
-.royal .kdesc{font-size:13px;color:#cbb8e8;margin-bottom:12px;position:relative;}
-.pbar{height:14px;border-radius:10px;background:#1d1838;overflow:hidden;position:relative;border:1px solid #4a3f7a;}
-.pbar > i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--ember));border-radius:10px;transition:width .8s cubic-bezier(.4,1.3,.5,1);}
-.pcount{font-family:'Mitr';font-weight:600;font-size:13px;color:#ffd98a;margin-top:7px;position:relative;}
-
-/* ---------- tribe cards ---------- */
-.sec-label{font-family:'Mitr';font-weight:600;font-size:13px;color:#9a86c8;letter-spacing:2px;text-transform:uppercase;
-  margin:24px 4px 10px;display:flex;align-items:center;gap:8px;}
-.sec-label::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#4a3f7a,transparent);}
-.tribe{border-radius:20px;padding:16px;margin-bottom:14px;background:var(--card);position:relative;overflow:hidden;
-  box-shadow:0 6px 18px rgba(0,0,0,.28);color:var(--ink);}
-.tribe.locked{opacity:.62;}
-.tribe .thead{display:flex;align-items:center;gap:11px;margin-bottom:13px;}
-.tribe .temoji{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:0 3px 0 rgba(0,0,0,.15);}
-.tribe .tinfo{flex:1;min-width:0;}
-.tribe .tname{font-family:'Mitr';font-weight:700;font-size:18px;line-height:1.1;}
-.tribe .tsub{font-size:12.5px;color:#8a7355;}
-.tribe .tcount{font-family:'Mitr';font-weight:700;font-size:15px;padding:4px 11px;border-radius:20px;color:#fff;flex-shrink:0;}
-.dragrow{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px;}
-.dtok{width:52px;text-align:center;flex-shrink:0;}
-.dtok .dc{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:27px;
-  background:#efe2c4;box-shadow:inset 0 2px 5px rgba(0,0,0,.12);position:relative;}
-.dtok.have .dc{background:radial-gradient(circle at 50% 35%, #fff7e0, #f7e6bd);box-shadow:0 3px 10px rgba(240,179,42,.5);}
-.dtok.lock .dc{filter:grayscale(1);}
-.dtok.lock .dc span{filter:brightness(.35) opacity(.55);}
-.dtok .dl{font-size:10px;color:#8a7355;margin-top:3px;line-height:1.1;height:22px;overflow:hidden;}
-.dtok.have .dl{color:#6b5226;font-weight:600;}
-.dtok .legend-ring{position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--gold);animation:spin 8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.playbtn{display:block;width:100%;text-align:center;font-family:'Mitr';font-weight:600;font-size:16px;color:#fff;
-  border:none;border-radius:13px;padding:12px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .07s;}
-.playbtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18);}
-.playbtn.soon{background:#cfc1a8!important;box-shadow:0 4px 0 #b3a488;cursor:default;color:#7a6c52;}
-
-/* tribe accent colors */
-.t-thai .temoji{background:linear-gradient(135deg,#5fc79a,#2fa37a);} .t-thai .tcount{background:var(--jade);} .t-thai .playbtn{background:var(--jade);box-shadow:0 4px 0 var(--jade-d);}
-.t-math .temoji{background:linear-gradient(135deg,#f3884f,#e8602c);} .t-math .tcount{background:var(--ember);} .t-math .playbtn{background:var(--ember);box-shadow:0 4px 0 var(--ember-d);}
-.t-spell .temoji{background:linear-gradient(135deg,#5ba3d8,#3a86c8);} .t-spell .tcount{background:var(--sky);} .t-spell .playbtn{background:var(--sky);box-shadow:0 4px 0 #275f8f;}
-.t-sci .temoji{background:linear-gradient(135deg,#9a6cc8,#7a47b0);} .t-sci .tcount{background:var(--plum);}
-
-/* ---------- confetti + emperor awakening ---------- */
-.confetti-pc{position:fixed;top:-20px;width:11px;height:16px;z-index:60;pointer-events:none;border-radius:2px;}
-@keyframes fall{0%{transform:translateY(0) rotateZ(0)}100%{transform:translateY(110vh) rotateZ(720deg)}}
-.emperor{position:fixed;inset:0;z-index:65;display:none;flex-direction:column;align-items:center;justify-content:center;
-  padding:26px;text-align:center;overflow:hidden;
-  background:radial-gradient(circle at 50% 42%, #4a3a2a 0%, #1a1023 55%, #0a0612 100%);animation:fadein .5s;}
-.emperor.show{display:flex;}
-.emperor .rays{position:absolute;top:40%;left:50%;width:160vh;height:160vh;transform:translate(-50%,-50%);pointer-events:none;
-  background:conic-gradient(from 0deg, #f0b32a22 0deg, transparent 12deg, #f0b32a22 24deg, transparent 36deg, #f0b32a22 48deg, transparent 60deg, #f0b32a22 72deg, transparent 84deg, #f0b32a22 96deg, transparent 108deg, #f0b32a22 120deg, transparent 132deg, #ffe9a833 144deg, transparent 156deg, #f0b32a22 168deg, transparent 180deg, #f0b32a22 192deg, transparent 204deg, #f0b32a22 216deg, transparent 228deg, #f0b32a22 240deg, transparent 252deg, #f0b32a22 264deg, transparent 276deg, #ffe9a833 288deg, transparent 300deg, #f0b32a22 312deg, transparent 324deg, #f0b32a22 336deg, transparent 348deg);
-  animation:spin 14s linear infinite;}
-.emperor .halo{position:absolute;top:38%;left:50%;width:340px;height:340px;transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(circle, #ffd98a55 0%, #f0b32a22 35%, transparent 60%);animation:pulse 2.4s ease-in-out infinite;}
-.emperor .pretitle{font-family:'Mali';font-size:16px;color:#ffd98a;letter-spacing:1px;position:relative;
-  opacity:0;animation:fadeUp .6s .2s forwards;}
-.emperor .edragon{font-size:150px;line-height:1;position:relative;margin:4px 0;filter:drop-shadow(0 14px 22px rgba(0,0,0,.5));
-  opacity:0;animation:emperorRise 1.1s .5s cubic-bezier(.2,1.5,.35,1) forwards;}
-@keyframes emperorRise{0%{transform:scale(.1) translateY(60px) rotate(-20deg);opacity:0}
-  55%{transform:scale(1.25) translateY(-10px) rotate(6deg);opacity:1}100%{transform:scale(1) translateY(0) rotate(0);opacity:1}}
-.emperor .crownpop{position:absolute;top:14%;left:50%;transform:translateX(-50%);font-size:54px;
-  opacity:0;animation:crownDrop 1s 1.3s cubic-bezier(.3,1.7,.4,1) forwards;z-index:2;}
-@keyframes crownDrop{0%{transform:translateX(-50%) translateY(-60px) scale(.4);opacity:0}
-  60%{transform:translateX(-50%) translateY(6px) scale(1.2);opacity:1}100%{transform:translateX(-50%) translateY(0) scale(1);opacity:1}}
-.emperor .etitle{font-family:'Mitr';font-weight:700;font-size:clamp(30px,9vw,42px);position:relative;margin-top:6px;
-  background:linear-gradient(135deg,#fff3cf,#f0b32a 50%,#e8602c);-webkit-background-clip:text;background-clip:text;color:transparent;
-  opacity:0;animation:fadeUp .6s 1.5s forwards;}
-.emperor .edesc{font-family:'Mali';font-weight:600;font-size:17px;color:#ffe9a8;margin-top:6px;position:relative;
-  opacity:0;animation:fadeUp .6s 1.8s forwards;max-width:300px;}
-.emperor .ebtn{margin-top:26px;position:relative;font-family:'Mitr';font-weight:600;font-size:17px;color:#3a2a08;
-  background:linear-gradient(135deg,var(--gold),#ffd98a);border:none;border-radius:16px;padding:14px 28px;cursor:pointer;
-  box-shadow:0 5px 0 var(--gold-d);opacity:0;animation:fadeUp .6s 2.2s forwards;}
-.emperor .ebtn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--gold-d);}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-/* ---------- demo toggle + footer ---------- */
-.demobar{position:fixed;top:10px;right:10px;z-index:5;}
-.demobtn{font-family:'Mitr';font-weight:600;font-size:12px;background:rgba(255,255,255,.12);color:#ffd98a;
-  border:1px solid #5a4a9a;border-radius:20px;padding:7px 12px;cursor:pointer;backdrop-filter:blur(4px);}
-.demobtn.on{background:var(--gold);color:#3a2a08;border-color:var(--gold);}
-footer{text-align:center;color:#8a7caa;font-size:12px;margin-top:24px;line-height:1.7;}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#000a;color:#fff;font-family:'Mitr';
-  font-size:13px;padding:10px 18px;border-radius:22px;opacity:0;transition:.3s;z-index:9;backdrop-filter:blur(4px);}
-.toast.show{opacity:1;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0606" />
+  <title>Dragon Math · Pordee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=phase4c" />
 </head>
 <body>
-<div class="demobar"><button class="demobtn" id="demoBtn" onclick="toggleDemo()">🔮 Preview full collection</button></div>
-<div id="app">
+  <!-- Animated background -->
+  <div class="bg-layer bg-embers" aria-hidden="true"></div>
+  <div class="bg-layer bg-grain" aria-hidden="true"></div>
 
-  <div class="hero">
-    <div class="crown">🐉</div>
-    <h1>World of Dragons</h1>
-    <div class="th">The Dragon Realm</div>
-    <div class="tag">Play every game, collect every tribe, awaken the legendary Dragon Emperor</div>
-  </div>
-
-  <div class="royal" id="royal">
-    <div class="king" id="kingEmoji">👑</div>
-    <div class="kname" id="kingName">The Dragon Emperor</div>
-    <div class="kdesc" id="kingDesc">Collect every tribe's King Dragon to awaken the ruler of the realm</div>
-    <div class="pbar"><i id="pbarFill" style="width:0%"></i></div>
-    <div class="pcount" id="pcount">King Dragons 0 / 3 tribes</div>
-  </div>
-
-  <div class="sec-label">Dragon Tribes</div>
-  <div id="tribes"></div>
-
-  <footer>
-    1492W · World of Dragons<br>
-    Every game adds dragons to one shared vault
-  </footer>
-</div>
-<div class="emperor" id="emperor">
-  <div class="rays"></div>
-  <div class="halo"></div>
-  <div class="crownpop">👑</div>
-  <div class="pretitle">All King Dragons gathered...</div>
-  <div class="edragon">🐉</div>
-  <div class="etitle">Dragon Emperor</div>
-  <div class="edesc">Pordee is the true ruler of the Dragon Realm! 🎉</div>
-  <button class="ebtn" onclick="closeEmperor()">Claim the Throne ✨</button>
-</div>
-<div class="toast" id="toast"></div>
-
-<script>
-'use strict';
-/* ============ WORLD OF DRAGONS — hub ============
-   Shared dragon vault: one localStorage key ('worldofdragons_v1')
-   shared across every game under 1492w.github.io (localStorage is per-origin, not per-path)
-   each game pushes its tribe-dragon id into tribes[tribeName] on a milestone */
-
-const TRIBES = [
-  {
-    id:'thai', cls:'t-thai', emoji:'📖', name:'Reading Tribe', sub:'Dragon Thai · Thai reading',
-    url:'https://1492w.github.io/dragon-thai/',
-    dragons:[
-      {id:'thai_consonant', e:'🐲', label:'Consonant Dragon', how:'Clear Level A'},
-      {id:'thai_vowel',     e:'🐉', label:'Vowel Dragon',     how:'Clear Level B'},
-      {id:'thai_lead',      e:'🐊', label:'Lead Dragon',      how:'Clear Level C'},
-      {id:'thai_tone',      e:'🎶', label:'Tone Dragon',      how:'Clear Level D'},
-      {id:'thai_collector', e:'💎', label:'Collector Dragon', how:'Collect half in-game'},
-      {id:'thai_king',      e:'👑', label:'Reading King Dragon', how:'Conquer the whole tower', legend:true},
-    ],
-  },
-  {
-    id:'math', cls:'t-math', emoji:'🔢', name:'Math Tribe', sub:'Math Dragon · mental math',
-    url:'https://1492w.github.io/math-dragon/',
-    dragons:[
-      {id:'math_add',  e:'🐲', label:'Plus Dragon',   how:'Clear addition'},
-      {id:'math_sub',  e:'🐉', label:'Minus Dragon',  how:'Clear subtraction'},
-      {id:'math_mul',  e:'🔥', label:'Times Dragon',  how:'Clear multiplication'},
-      {id:'math_div',  e:'🐊', label:'Divide Dragon', how:'Clear division'},
-      {id:'math_speed',e:'💎', label:'Speed Dragon',  how:'Beat the time goal'},
-      {id:'math_king', e:'👑', label:'Math King Dragon', how:'Conquer every stage', legend:true},
-    ],
-  },
-  {
-    id:'spelling', cls:'t-spell', emoji:'🔤', name:'Spelling Tribe', sub:'Dragon Spelling · English spelling',
-    url:'https://1492w.github.io/dragon-spelling/',
-    dragons:[
-      {id:'sp_abc',    e:'🐲', label:'ABC Dragon',     how:'Learn the letters'},
-      {id:'sp_short',  e:'🐉', label:'Short Word Dragon', how:'Spell short words'},
-      {id:'sp_long',   e:'🐊', label:'Long Word Dragon',  how:'Spell long words'},
-      {id:'sp_sight',  e:'⚡', label:'Sight Word Dragon', how:'Learn sight words'},
-      {id:'sp_master', e:'💎', label:'Speller Dragon', how:'Collect half in-game'},
-      {id:'sp_king',   e:'👑', label:'Spelling King Dragon', how:'Conquer the word tower', legend:true},
-    ],
-  },
-  {
-    id:'science', cls:'t-sci', emoji:'🔬', name:'Science Tribe', sub:'Coming soon',
-    url:null, soon:true,
-    dragons:[
-      {id:'sci_1', e:'🧪', label:'', how:''},{id:'sci_2', e:'🔭', label:'', how:''},
-      {id:'sci_3', e:'🪐', label:'', how:''},{id:'sci_4', e:'⚗️', label:'', how:''},
-      {id:'sci_5', e:'💎', label:'', how:''},{id:'sci_6', e:'👑', label:'', how:'', legend:true},
-    ],
-  },
-];
-
-const KEY='worldofdragons_v1';
-let demo=false;
-
-function loadWorld(){
-  if(demo){ // preview: fill every open tribe so the end-state is visible
-    return {tribes:{
-      thai:['thai_consonant','thai_vowel','thai_lead','thai_tone','thai_collector','thai_king'],
-      math:['math_add','math_sub','math_mul','math_div','math_speed','math_king'],
-      spelling:['sp_abc','sp_short','sp_long','sp_sight','sp_master','sp_king'],
-    }};
-  }
-  try{ const r=localStorage.getItem(KEY); if(r) return JSON.parse(r); }catch(e){}
-  return {tribes:{}};
-}
-
-function render(){
-  const W=loadWorld(); const got=(W.tribes)||{};
-  const host=document.getElementById('tribes'); host.innerHTML='';
-  let kingsGot=0, kingsTotal=0;
-
-  TRIBES.forEach(T=>{
-    const owned = new Set(got[T.id]||[]);
-    const have = T.dragons.filter(d=>owned.has(d.id)).length;
-    const total = T.dragons.length;
-    if(!T.soon){ kingsTotal++; if(owned.has(T.id+'_king')||owned.has(T.dragons[T.dragons.length-1].id))kingsGot++; }
-
-    const card=document.createElement('div');
-    card.className='tribe '+T.cls+(T.soon?' locked':'');
-    let toks='';
-    T.dragons.forEach(d=>{
-      const has=owned.has(d.id);
-      toks+=`<div class="dtok ${has?'have':'lock'}">
-        <div class="dc">${has&&d.legend?'<div class="legend-ring"></div>':''}<span>${d.e}</span></div>
-        <div class="dl">${T.soon?'':(d.label||'')}</div>
-      </div>`;
-    });
-    card.innerHTML=`
-      <div class="thead">
-        <div class="temoji">${T.emoji}</div>
-        <div class="tinfo"><div class="tname">${T.name}</div><div class="tsub">${T.sub}</div></div>
-        <div class="tcount">${T.soon?'🔒':have+'/'+total}</div>
+  <main id="app">
+    <!-- ========== HOME SCREEN ========== -->
+    <section id="screen-home" class="screen active">
+      <div class="hero">
+        <div class="hero-crest">🐉</div>
+        <h1 class="hero-title">Dragon Math</h1>
+        <p class="hero-sub">The Lair of <span id="player-name">Pordee</span></p>
       </div>
-      <div class="dragrow">${toks}</div>
-      ${T.soon
-        ? `<button class="playbtn soon">Coming Soon</button>`
-        : `<button class="playbtn" onclick="goGame('${T.url}')">Play →</button>`}
-    `;
-    host.appendChild(card);
-  });
 
-  // royal
-  const royal=document.getElementById('royal');
-  const pct = kingsTotal? Math.round(kingsGot/kingsTotal*100):0;
-  document.getElementById('pbarFill').style.width=pct+'%';
-  document.getElementById('pcount').textContent=`King Dragons ${kingsGot} / ${kingsTotal} tribes`;
-  if(kingsGot>=kingsTotal && kingsTotal>0){
-    royal.classList.add('unlocked');
-    document.getElementById('kingEmoji').textContent='✨';
-    document.getElementById('kingName').textContent='Dragon Emperor';
-    document.getElementById('kingDesc').textContent='The realm\'s ruler is awakened! Pordee is the true Dragon Lord';
-    maybeEmperor();   // big celebration when the emperor awakens (first completion, or in preview)
-  }else{
-    royal.classList.remove('unlocked');
-    document.getElementById('kingEmoji').textContent='👑';
-    document.getElementById('kingName').textContent='The Dragon Emperor';
-    document.getElementById('kingDesc').textContent='Collect each tribe\'s King Dragon (👑) to awaken the realm\'s ruler';
-  }
-}
+      <div class="stats-strip">
+        <div class="stat">
+          <span class="stat-icon">🪙</span>
+          <span class="stat-value" id="home-coins">0</span>
+          <span class="stat-label">Gold</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">🐲</span>
+          <span class="stat-value" id="home-dragons">0</span>
+          <span class="stat-label">Dragons</span>
+        </div>
+        <div class="stat">
+          <span class="stat-icon">🏯</span>
+          <span class="stat-value" id="home-floor">1</span>
+          <span class="stat-label">Tower</span>
+        </div>
+      </div>
 
-function goGame(url){ if(url) location.href=url; }
+      <nav class="menu">
+        <button class="menu-card" data-nav="practice">
+          <span class="menu-icon">⚔️</span>
+          <span class="menu-title">Train</span>
+          <span class="menu-desc">Sharpen your mind</span>
+        </button>
+        <button class="menu-card" data-nav="tables">
+          <span class="menu-icon">✖️</span>
+          <span class="menu-title">Table Trials</span>
+          <span class="menu-desc">Master the times-tables</span>
+        </button>
+        <button class="menu-card" data-nav="forge">
+          <span class="menu-icon">🔨</span>
+          <span class="menu-title">Factor Forge</span>
+          <span class="menu-desc">Break numbers · simplify</span>
+        </button>
+        <button class="menu-card menu-card-primary" data-nav="battle-setup">
+          <span class="menu-icon">🏯</span>
+          <span class="menu-title">Dragon Tower</span>
+          <span class="menu-desc">Battle · Floor <span id="menu-floor">1</span></span>
+        </button>
+        <button class="menu-card" data-nav="shop">
+          <span class="menu-icon">🔥</span>
+          <span class="menu-title">Shop</span>
+          <span class="menu-desc">Summon dragons</span>
+          <span id="daily-dot" class="daily-dot"></span>
+        </button>
+        <button class="menu-card" data-nav="hoard">
+          <span class="menu-icon">💎</span>
+          <span class="menu-title">Hoard</span>
+          <span class="menu-desc">Your collection</span>
+        </button>
+      </nav>
 
-/* ---------- emperor awakening (the climax) ---------- */
-const CONFETTI_COLORS=['#e8602c','#f0b32a','#2fa37a','#3a86c8','#7a47b0','#ffd98a','#fff'];
-function confetti(n=120){
-  for(let i=0;i<n;i++){
-    const c=document.createElement('div');c.className='confetti-pc';
-    c.style.left=Math.random()*100+'vw';
-    c.style.background=CONFETTI_COLORS[i%CONFETTI_COLORS.length];
-    const dur=2.4+Math.random()*2, delay=Math.random()*0.7;
-    c.style.animation=`fall ${dur}s linear ${delay}s forwards`;
-    if(Math.random()<.5){c.style.width='8px';c.style.height='8px';c.style.borderRadius='50%';}
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),(dur+delay)*1000+120);
-  }
-}
-let emperorShown=false; // avoid replaying within a single page view
-function maybeEmperor(){
-  if(emperorShown)return;
-  if(demo){ emperorShown=true; setTimeout(emperorReveal,250); return; } // preview mode: always show
-  // real data: celebrate only the first time everything is complete (remember it happened)
-  try{
-    const W=JSON.parse(localStorage.getItem(KEY)||'{}');
-    if(!W.crowned){ W.crowned=true; W.updated=Date.now(); localStorage.setItem(KEY,JSON.stringify(W));
-      emperorShown=true; setTimeout(emperorReveal,300); }
-  }catch(e){}
-}
-function emperorReveal(){
-  const el=document.getElementById('emperor');
-  el.classList.add('show');
-  // confetti in waves for a grand feel
-  confetti(140);
-  setTimeout(()=>confetti(120),700);
-  setTimeout(()=>confetti(120),1500);
-}
-function closeEmperor(){ document.getElementById('emperor').classList.remove('show'); }
+      <div class="home-foot">
+        <button class="text-btn" id="restore-btn" style="color:var(--gold-bright);font-size:14px;">🎁 Restore Pordee's Dragons</button>
+        <br/>
+        <button class="text-btn" id="reset-btn">Reset progress</button>
+      </div>
+    </section>
 
-function toggleDemo(){
-  demo=!demo; emperorShown=false;  // toggling preview resets so the celebration can show again
-  document.getElementById('demoBtn').classList.toggle('on',demo);
-  document.getElementById('demoBtn').textContent = demo?'🔮 Previewing':'🔮 Preview full collection';
-  toast(demo?'This is how it looks when every tribe is complete':'Back to your real progress');
-  if(!demo)closeEmperor();
-  render();
-}
-let tt;
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000);}
+    <!-- ========== PRACTICE SETUP ========== -->
+    <section id="screen-practice" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Training Grounds</h2>
+        <div class="coins-mini"><span>🪙</span><span id="practice-coins">0</span></div>
+      </header>
 
-render();
-</script>
+      <div class="section-body">
+        <h3 class="section-label">Mode</h3>
+        <div class="option-grid">
+          <button class="option-card mode-option selected" data-mode="sprint">
+            <span class="opt-icon">⏱️</span>
+            <span class="opt-title">Sprint</span>
+            <span class="opt-desc">60 seconds. Answer as many as you can.</span>
+          </button>
+          <button class="option-card mode-option" data-mode="streak">
+            <span class="opt-icon">🔥</span>
+            <span class="opt-title">Streak</span>
+            <span class="opt-desc">Keep going. One mistake ends the run.</span>
+          </button>
+          <button class="option-card mode-option" data-mode="beat">
+            <span class="opt-icon">🏁</span>
+            <span class="opt-title">Beat Your Time</span>
+            <span class="opt-desc">20 questions. Beat your best time.</span>
+          </button>
+        </div>
+
+        <h3 class="section-label">Operations</h3>
+        <div class="op-row">
+          <button class="op-chip selected" data-op="add">+</button>
+          <button class="op-chip selected" data-op="sub">−</button>
+          <button class="op-chip" data-op="mul">×</button>
+          <button class="op-chip" data-op="div">÷</button>
+        </div>
+
+        <h3 class="section-label">Dragons at your side <span class="muted">(up to 3)</span></h3>
+        <div id="practice-dragon-picker" class="dragon-picker"></div>
+      </div>
+
+      <div class="screen-footer">
+        <button class="btn-primary btn-large" id="practice-start">Begin Training 🔥</button>
+      </div>
+    </section>
+
+    <!-- ========== PRACTICE PLAY ========== -->
+    <section id="screen-play" class="screen play-screen">
+      <header class="play-header">
+        <button class="quit-btn" id="quit-play">✕</button>
+        <div class="play-stats">
+          <div class="play-stat"><span id="play-timer">60</span><small>time</small></div>
+          <div class="play-stat"><span id="play-score">0</span><small>correct</small></div>
+          <div class="play-stat"><span id="play-coins-run">0</span><small>🪙 gold</small></div>
+        </div>
+      </header>
+
+      <div class="play-stage">
+        <div id="play-question" class="question"></div>
+        <div id="play-answer" class="answer-display">&nbsp;</div>
+        <div id="play-feedback" class="feedback"></div>
+      </div>
+
+      <div class="keypad" id="keypad">
+        <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+        <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+        <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+        <button data-key="-" class="key-sign">±</button><button data-key="0">0</button><button data-key="del" class="key-del">⌫</button>
+      </div>
+    </section>
+
+    <!-- ========== RESULTS ========== -->
+    <section id="screen-results" class="screen">
+      <div class="results-card">
+        <div class="results-crest">🐉</div>
+        <h2 id="results-title">Victory</h2>
+        <p id="results-sub" class="results-sub"></p>
+
+        <div class="results-grid" id="results-grid"></div>
+
+        <div class="results-coins">
+          <div class="coin-burst">🪙</div>
+          <div class="coin-amount">+<span id="results-coins">0</span></div>
+          <div class="coin-label">gold earned</div>
+        </div>
+
+        <div id="results-drop" class="results-drop hidden">
+          <div class="drop-title">A dragon appears!</div>
+          <div class="drop-card" id="results-drop-card"></div>
+        </div>
+
+        <div id="results-slow" class="results-slow hidden"></div>
+
+        <div class="results-actions">
+          <button class="btn-ghost" data-nav="home">To Lair</button>
+          <button class="btn-primary" id="results-again">Again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SHOP ========== -->
+    <section id="screen-shop" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Dragon Shop</h2>
+        <div class="coins-mini"><span>🪙</span><span id="shop-coins">0</span></div>
+      </header>
+      <div class="section-body">
+        <div class="shop-tabs">
+          <button class="shop-tab selected" data-tab="dragons">🐉 Dragons</button>
+          <button class="shop-tab" data-tab="eggs">🥚 Eggs</button>
+        </div>
+        <div id="shop-grid" class="shop-grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== HOARD ========== -->
+    <section id="screen-hoard" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Your Hoard</h2>
+        <div class="coins-mini"><span>🪙</span><span id="hoard-coins">0</span></div>
+      </header>
+      <div class="section-body">
+        <div id="hoard-grid" class="hoard-grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== BATTLE SETUP ========== -->
+    <section id="screen-battle-setup" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Tower · Floor <span id="battle-floor-label">1</span></h2>
+        <div class="coins-mini"><span>🪙</span><span id="battle-coins">0</span></div>
+      </header>
+      <div class="section-body">
+        <div id="battle-preview" class="battle-preview">
+          <div class="enemy-preview">
+            <div class="enemy-emoji" id="enemy-emoji">🐲</div>
+            <div class="enemy-name" id="enemy-name">Shadow Wyrmling</div>
+            <div class="enemy-stats">
+              <span>❤️ <span id="enemy-hp">100</span> HP</span>
+              <span>🪙 <span id="enemy-reward">25</span> reward</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-label">Your Team <span class="muted">(up to 3)</span></h3>
+        <div id="battle-dragon-picker" class="dragon-picker"></div>
+
+        <div class="battle-rules">
+          <h4>Battle Rules</h4>
+          <ul>
+            <li><strong>&lt; 2s</strong> answer → <span class="hot">Critical!</span> (30 dmg)</li>
+            <li><strong>&lt; 4s</strong> answer → 20 dmg</li>
+            <li><strong>&lt; 6s</strong> answer → 15 dmg</li>
+            <li>Slow or wrong → You lose 1 ❤️</li>
+            <li>You have <strong>3 ❤️</strong>. Zero = defeat.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="screen-footer">
+        <button class="btn-primary btn-large" id="battle-start">Enter the Tower ⚔️</button>
+      </div>
+    </section>
+
+    <!-- ========== BATTLE PLAY ========== -->
+    <section id="screen-battle" class="screen battle-screen">
+      <header class="battle-header">
+        <button class="quit-btn" id="quit-battle">✕</button>
+        <div class="floor-badge">Floor <span id="battle-floor-num">1</span></div>
+        <div class="hearts" id="battle-hearts">❤️❤️❤️</div>
+      </header>
+
+      <div class="battle-arena">
+        <div class="enemy-card">
+          <div class="enemy-emoji-lg" id="battle-enemy-emoji">🐲</div>
+          <div class="enemy-name-lg" id="battle-enemy-name">Shadow Wyrmling</div>
+          <div class="hp-bar">
+            <div class="hp-fill" id="battle-hp-fill"></div>
+            <div class="hp-text"><span id="battle-hp-cur">100</span> / <span id="battle-hp-max">100</span></div>
+          </div>
+        </div>
+
+        <div class="floating-fx" id="battle-fx"></div>
+
+        <div class="battle-timer">
+          <div class="timer-ring">
+            <svg viewBox="0 0 100 100">
+              <circle class="ring-bg" cx="50" cy="50" r="45" />
+              <circle class="ring-fg" id="timer-ring-fg" cx="50" cy="50" r="45" />
+            </svg>
+            <div class="timer-num" id="battle-time">10</div>
+          </div>
+        </div>
+
+        <div class="battle-question" id="battle-question"></div>
+        <div class="battle-answer" id="battle-answer">&nbsp;</div>
+      </div>
+
+      <div class="keypad" id="battle-keypad">
+        <button data-bkey="1">1</button><button data-bkey="2">2</button><button data-bkey="3">3</button>
+        <button data-bkey="4">4</button><button data-bkey="5">5</button><button data-bkey="6">6</button>
+        <button data-bkey="7">7</button><button data-bkey="8">8</button><button data-bkey="9">9</button>
+        <button data-bkey="-" class="key-sign">±</button><button data-bkey="0">0</button><button data-bkey="del" class="key-del">⌫</button>
+      </div>
+    </section>
+
+    <!-- ========== TABLE TRIALS (select) ========== -->
+    <section id="screen-tables" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Table Trials</h2>
+        <div class="coins-mini"><span>🪙</span><span id="tables-coins">0</span></div>
+      </header>
+      <div class="section-body">
+        <p class="tables-intro">Pick a dragon rune and master its times-table. Answer fast (under 3s) without stumbling to seal a fact. 🐉</p>
+        <div id="gauntlet-wrap" class="hidden">
+          <h3 class="section-label gauntlet-label">🔥 Dragon's Gauntlet <span class="muted">reclaim the runes that escaped you</span></h3>
+          <div id="gauntlet-grid" class="gauntlet-grid"></div>
+        </div>
+        <h3 class="section-label">Times-tables</h3>
+        <div id="tables-grid" class="rune-grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== TABLE RUN (play) ========== -->
+    <section id="screen-tablerun" class="screen play-screen">
+      <header class="play-header">
+        <button class="quit-btn" id="quit-tablerun">✕</button>
+        <div class="tablerun-titlewrap">
+          <div class="tablerun-title" id="tablerun-title">Trial of ×2</div>
+          <div class="tablerun-prog" id="tablerun-prog">1 / 12</div>
+        </div>
+      </header>
+      <div class="tablerun-tip" id="tablerun-tip"></div>
+      <div class="play-stage">
+        <div id="tablerun-q" class="question"></div>
+        <div id="tablerun-answer" class="battle-answer">&nbsp;</div>
+        <div id="tablerun-feedback" class="feedback"></div>
+        <div id="tablerun-mastery" class="tt-dots"></div>
+      </div>
+      <div class="keypad" id="tablerun-keypad">
+        <button data-tkey="1">1</button><button data-tkey="2">2</button><button data-tkey="3">3</button>
+        <button data-tkey="4">4</button><button data-tkey="5">5</button><button data-tkey="6">6</button>
+        <button data-tkey="7">7</button><button data-tkey="8">8</button><button data-tkey="9">9</button>
+        <button data-tkey="ok" class="key-sign">✓</button><button data-tkey="0">0</button><button data-tkey="del" class="key-del">⌫</button>
+      </div>
+    </section>
+
+    <!-- ========== FACTOR FORGE (select) ========== -->
+    <section id="screen-forge" class="screen">
+      <header class="screen-header">
+        <button class="back-btn" data-nav="home">‹ Lair</button>
+        <h2>Factor Forge</h2>
+        <div class="coins-mini"><span>🪙</span><span id="forge-coins">0</span></div>
+      </header>
+      <div class="section-body">
+        <p class="tables-intro">Break numbers into prime shards, then simplify fractions — the secret to fast division. 🔨</p>
+        <div id="forge-gauntlet-wrap" class="hidden">
+          <h3 class="section-label gauntlet-label">🔥 Forge Gauntlet <span class="muted">redo the ones that slipped</span></h3>
+          <div id="forge-gauntlet-grid" class="gauntlet-grid"></div>
+        </div>
+        <h3 class="section-label">Modes</h3>
+        <div class="forge-modes">
+          <button class="forge-mode" id="forge-mode-shatter">
+            <span class="forge-emoji">💎</span>
+            <span class="forge-body">
+              <span class="forge-title">Prime Shatter</span>
+              <span class="forge-desc">27 → 3 × 3 × 3 · break to prime shards</span>
+            </span>
+            <span class="gauntlet-go">▶</span>
+          </button>
+          <button class="forge-mode" id="forge-mode-simplify">
+            <span class="forge-emoji">✂️</span>
+            <span class="forge-body">
+              <span class="forge-title">Simplify</span>
+              <span class="forge-desc">27/15 → 9/5 · reduce with common factors</span>
+            </span>
+            <span class="gauntlet-go">▶</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FACTOR FORGE (run) ========== -->
+    <section id="screen-forgerun" class="screen play-screen">
+      <header class="play-header">
+        <button class="quit-btn" id="quit-forgerun">✕</button>
+        <div class="tablerun-titlewrap">
+          <div class="tablerun-title" id="forgerun-title">Prime Shatter</div>
+          <div class="tablerun-prog" id="forgerun-prog">1 / 10</div>
+        </div>
+      </header>
+      <div class="tablerun-tip" id="forgerun-prompt"></div>
+      <div class="play-stage">
+        <div id="forgerun-target" class="forge-target"></div>
+        <div id="forgerun-work" class="forge-work"></div>
+        <div id="forgerun-answer" class="battle-answer">&nbsp;</div>
+        <div id="forgerun-feedback" class="feedback"></div>
+      </div>
+      <div class="keypad" id="forgerun-keypad">
+        <button data-fkey="1">1</button><button data-fkey="2">2</button><button data-fkey="3">3</button>
+        <button data-fkey="4">4</button><button data-fkey="5">5</button><button data-fkey="6">6</button>
+        <button data-fkey="7">7</button><button data-fkey="8">8</button><button data-fkey="9">9</button>
+        <button data-fkey="del" class="key-del">⌫</button><button data-fkey="0">0</button><button data-fkey="ok" class="key-sign">✓</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== MODALS ========== -->
+  <!-- Hatch modal -->
+  <div id="modal-hatch" class="modal">
+    <div class="modal-card modal-hatch-card">
+      <div class="modal-header">
+        <h3 id="hatch-title">The egg hatches...</h3>
+      </div>
+      <div class="hatch-stage">
+        <div id="hatch-egg" class="hatch-egg-phase">🥚</div>
+        <div id="hatch-reveal" class="hatch-reveal">
+          <div class="hatch-burst"></div>
+          <div id="hatch-emoji" class="hatch-dragon-emoji">🐲</div>
+          <div id="hatch-name" class="hatch-dragon-name">Dragon</div>
+          <div id="hatch-rarity" class="modal-rarity"></div>
+          <div id="hatch-desc" class="hatch-dragon-desc"></div>
+        </div>
+      </div>
+      <button class="btn-primary btn-large" data-close-modal="modal-hatch">Claim</button>
+    </div>
+  </div>
+
+  <!-- Ascend modal -->
+  <div id="modal-ascend" class="modal">
+    <div class="modal-card modal-ascend-card">
+      <div class="ascend-aura"></div>
+      <div class="modal-header">
+        <h3>✨ ASCENDED ✨</h3>
+      </div>
+      <div id="ascend-emoji" class="hatch-dragon-emoji ascend-glow">✨🐲</div>
+      <div id="ascend-name" class="hatch-dragon-name">Ember Lord</div>
+      <div id="ascend-rarity" class="modal-rarity"></div>
+      <div id="ascend-desc" class="hatch-dragon-desc"></div>
+      <button class="btn-primary btn-large" data-close-modal="modal-ascend">Behold</button>
+    </div>
+  </div>
+
+  <!-- Daily bonus modal -->
+  <div id="modal-daily" class="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Daily Bonus</h3>
+      </div>
+      <div class="daily-streak">Day <span id="daily-streak-preview">1</span></div>
+      <div class="daily-reward" id="daily-reward-preview">+30 Gold</div>
+      <div class="daily-streak-info">
+        🔥 Keep your streak going! Miss a day and it resets.
+        <br/>Day 7 = Rare Egg · Day 14 = Mythic Egg
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="daily-close-btn">Later</button>
+        <button class="btn-primary" id="daily-claim-btn">Claim</button>
+      </div>
+      <div class="daily-confirm" id="daily-reward-text" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="game.js?v=phase5-world"></script>
 </body>
 </html>
