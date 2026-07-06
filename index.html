@@ -95,6 +95,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .t-math .temoji{background:linear-gradient(135deg,#f3884f,#e8602c);} .t-math .tcount{background:var(--ember);} .t-math .playbtn{background:var(--ember);box-shadow:0 4px 0 var(--ember-d);}
 .t-spell .temoji{background:linear-gradient(135deg,#5ba3d8,#3a86c8);} .t-spell .tcount{background:var(--sky);} .t-spell .playbtn{background:var(--sky);box-shadow:0 4px 0 #275f8f;}
 .t-sci .temoji{background:linear-gradient(135deg,#9a6cc8,#7a47b0);} .t-sci .tcount{background:var(--plum);}
+.t-chinese .temoji{background:linear-gradient(135deg,#e0524d,#c1272d);} .t-chinese .tcount{background:#c1272d;} .t-chinese .playbtn{background:#c1272d;box-shadow:0 4px 0 #8e1a1f;}
 
 /* ---------- confetti + emperor awakening ---------- */
 .confetti-pc{position:fixed;top:-20px;width:11px;height:16px;z-index:60;pointer-events:none;border-radius:2px;}
@@ -254,6 +255,18 @@ const TRIBES = [
       {id:'sp_sight',  e:'⚡', label:'Sight Word Dragon', how:'Learn sight words'},
       {id:'sp_master', e:'💎', label:'Speller Dragon', how:'Collect half in-game'},
       {id:'sp_king',   e:'👑', label:'Spelling King Dragon', how:'Conquer the word tower', legend:true},
+    ],
+  },
+  {
+    id:'chinese', cls:'t-chinese', emoji:'🀄', name:'Chinese Tribe', sub:'Dragon Chinese · 中文 Zhōngwén',
+    url:'https://1492w.github.io/dragon-chinese/',
+    dragons:[
+      {id:'cn_cloud', e:'🐲', label:'云龙 Yúnlóng (Cloud Dragon)',   how:'Learn 5 words'},
+      {id:'cn_river', e:'🐉', label:'江龙 Jiānglóng (River Dragon)', how:'Learn 15 words'},
+      {id:'cn_fire',  e:'🔥', label:'火龙 Huǒlóng (Fire Dragon)',    how:'Learn 30 words'},
+      {id:'cn_sea',   e:'🐊', label:'海龙 Hǎilóng (Sea Dragon)',     how:'Learn 50 words'},
+      {id:'cn_gold',  e:'💎', label:'金龙 Jīnlóng (Golden Dragon)',  how:'Learn 70 words'},
+      {id:'cn_king',  e:'👑', label:'龙王 Lóngwáng (Dragon King)',   how:'Master all words', legend:true},
     ],
   },
   {
