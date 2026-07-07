@@ -94,7 +94,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
 .t-thai .temoji{background:linear-gradient(135deg,#5fc79a,#2fa37a);} .t-thai .tcount{background:var(--jade);} .t-thai .playbtn{background:var(--jade);box-shadow:0 4px 0 var(--jade-d);}
 .t-math .temoji{background:linear-gradient(135deg,#f3884f,#e8602c);} .t-math .tcount{background:var(--ember);} .t-math .playbtn{background:var(--ember);box-shadow:0 4px 0 var(--ember-d);}
 .t-spell .temoji{background:linear-gradient(135deg,#5ba3d8,#3a86c8);} .t-spell .tcount{background:var(--sky);} .t-spell .playbtn{background:var(--sky);box-shadow:0 4px 0 #275f8f;}
-.t-sci .temoji{background:linear-gradient(135deg,#9a6cc8,#7a47b0);} .t-sci .tcount{background:var(--plum);}
+.t-sci .temoji{background:linear-gradient(135deg,#9a6cc8,#7a47b0);} .t-sci .tcount{background:var(--plum);} .t-sci .playbtn{background:#7a47b0;box-shadow:0 4px 0 #5a3488;}
 .t-chinese .temoji{background:linear-gradient(135deg,#e0524d,#c1272d);} .t-chinese .tcount{background:#c1272d;} .t-chinese .playbtn{background:#c1272d;box-shadow:0 4px 0 #8e1a1f;}
 
 /* ---------- confetti + emperor awakening ---------- */
@@ -270,12 +270,15 @@ const TRIBES = [
     ],
   },
   {
-    id:'science', cls:'t-sci', emoji:'🔬', name:'Science Tribe', sub:'Coming soon',
-    url:null, soon:true,
+    id:'science', cls:'t-sci', emoji:'🔬', name:'Science Tribe', sub:'Dragon Science · Chemistry',
+    url:'https://1492w.github.io/dragon-science/',
     dragons:[
-      {id:'sci_1', e:'🧪', label:'', how:''},{id:'sci_2', e:'🔭', label:'', how:''},
-      {id:'sci_3', e:'🪐', label:'', how:''},{id:'sci_4', e:'⚗️', label:'', how:''},
-      {id:'sci_5', e:'💎', label:'', how:''},{id:'sci_6', e:'👑', label:'', how:'', legend:true},
+      {id:'sci_1', e:'🧪', label:'Test-Tube Wyrmling', how:'Master 3 cards'},
+      {id:'sci_2', e:'🔭', label:'Stargazer Drake',    how:'Master 8 cards'},
+      {id:'sci_3', e:'🪐', label:'Orbit Dragon',       how:'Master 16 cards'},
+      {id:'sci_4', e:'⚗️', label:'Alchemist Dragon',   how:'Master 25 cards'},
+      {id:'sci_5', e:'💎', label:'Crystal Dragon',     how:'Master 35 cards'},
+      {id:'sci_6', e:'👑', label:'Grand Scholar Dragon', how:'Master every card', legend:true},
     ],
   },
 ];
